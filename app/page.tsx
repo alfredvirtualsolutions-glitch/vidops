@@ -167,6 +167,19 @@ export default function BasketballAiStudio() {
   const [busy, setBusy] = useState(false);
   const playerRef = useRef<PlayerRef | null>(null);
 
+  // GitHub App User-to-Server Auth state (acting on behalf of alfredkeybusiness-eng / Chubby Genius)
+  const [ghClientId, setGhClientId] = useState("");
+  const [ghUserToken, setGhUserToken] = useState("");
+  const [ghDeviceInfo, setGhDeviceInfo] = useState<{
+    device_code?: string;
+    user_code?: string;
+    verification_uri?: string;
+  } | null>(null);
+  const [ghStatus, setGhStatus] = useState<{ text: string; kind: "" | "ok" | "err" }>({
+    text: "",
+    kind: "",
+  });
+
   const loadStudioData = useCallback(() => {
     fetch("/api/clips")
       .then((r) => r.json())
@@ -755,6 +768,159 @@ export default function BasketballAiStudio() {
                     </span>
                   </li>
                 </ul>
+
+                <h2 style={{ marginTop: 18 }}>
+                  GitHub App User-to-Server Actions (On Behalf of @alfredkeybusiness-eng)
+                </h2>
+                <div className="field">
+                  <label htmlFor="ghClientId">GitHub App Client ID (for Device Flow)</label>
+                  <input
+                    id="ghClientId"
+                    value={ghClientId}
+                    onChange={(e) => setGhClientId(e.target.value)}
+                    placeholder="Iv1.xxxxxxxx or Iv23xxxxxxxx"
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="ghUserToken">
+                    User Access Token (<code>ghu_...</code> / OAuth token acting on your behalf)
+                  </label>
+                  <input
+                    id="ghUserToken"
+                    type="password"
+                    value={ghUserToken}
+                    onChange={(e) => setGhUserToken(e.target.value)}
+                    placeholder="ghu_..."
+                  />
+                </div>
+                <div className="row">
+                  <button
+                    onClick={async () => {
+                      setGhStatus({ text: "Starting GitHub App Device Flow…", kind: "" });
+                      const res = await fetch("/api/github-app", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          action: "start_device_flow",
+                          clientId: ghClientId,
+                        }),
+                      });
+                      const d = await res.json();
+                      if (d.user_code) {
+                        setGhDeviceInfo(d);
+                        setGhStatus({
+                          text: `Open ${d.verification_uri} and enter code: ${d.user_code}`,
+                          kind: "ok",
+                        });
+                      } else {
+                        setGhStatus({
+                          text: d.error || d.error_description || "Failed to start device flow",
+                          kind: "err",
+                        });
+                      }
+                    }}
+                  >
+                    1. Authorize App (Device Flow)
+                  </button>
+                  {ghDeviceInfo?.device_code && (
+                    <button
+                      onClick={async () => {
+                        const res = await fetch("/api/github-app", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            action: "poll_device_token",
+                            clientId: ghClientId,
+                            deviceCode: ghDeviceInfo.device_code,
+                          }),
+                        });
+                        const d = await res.json();
+                        if (d.access_token) {
+                          setGhUserToken(d.access_token);
+                          setGhStatus({
+                            text: "Received user-to-server token (ghu_...)!",
+                            kind: "ok",
+                          });
+                        } else {
+                          setGhStatus({
+                            text: d.error_description || d.error || "Waiting for authorization…",
+                            kind: "err",
+                          });
+                        }
+                      }}
+                    >
+                      Poll Token
+                    </button>
+                  )}
+                  <button
+                    className="primary"
+                    onClick={async () => {
+                      setGhStatus({
+                        text: "Posting MVP & Game Report Issue on behalf of user…",
+                        kind: "",
+                      });
+                      const res = await fetch("/api/github-app", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          action: "act_on_behalf",
+                          userAccessToken: ghUserToken,
+                          operation: "create_issue",
+                          owner: "alfredkeybusiness-eng",
+                          repo: "vidops",
+                        }),
+                      });
+                      const d = await res.json();
+                      if (d.ok && d.issue?.html_url) {
+                        setGhStatus({
+                          text: `Created Issue on behalf of user: ${d.issue.html_url}`,
+                          kind: "ok",
+                        });
+                      } else {
+                        setGhStatus({
+                          text: d.error || d.issue?.message || "GitHub API call failed",
+                          kind: "err",
+                        });
+                      }
+                    }}
+                  >
+                    Post Game Report Issue (On Behalf)
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setGhStatus({
+                        text: "Creating Deployment on behalf of user…",
+                        kind: "",
+                      });
+                      const res = await fetch("/api/github-app", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          action: "act_on_behalf",
+                          userAccessToken: ghUserToken,
+                          operation: "create_deployment",
+                          owner: "alfredkeybusiness-eng",
+                          repo: "vidops",
+                        }),
+                      });
+                      const d = await res.json();
+                      if (d.ok && d.deployment?.id) {
+                        setGhStatus({
+                          text: `Deployment #${d.deployment.id} created on behalf of @alfredkeybusiness-eng`,
+                          kind: "ok",
+                        });
+                      } else {
+                        setGhStatus({
+                          text: d.error || d.deployment?.message || "Deployment request failed",
+                          kind: "err",
+                        });
+                      }
+                    }}
+                  >
+                    Trigger Deployment (On Behalf)
+                  </button>
+                </div>
+                <div className={`status ${ghStatus.kind}`}>{ghStatus.text}</div>
               </div>
 
               <div className="panel">
