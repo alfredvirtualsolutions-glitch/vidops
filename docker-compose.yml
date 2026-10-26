@@ -1,0 +1,54 @@
+services:
+  vidops-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vidops-web
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.example
+    environment:
+      - NODE_ENV=development
+      - DATACONNECT_EMULATOR_HOST=http://localhost:9399
+    volumes:
+      - ./basketball_output:/app/basketball_output
+      - ./clips:/app/clips
+      - ./reels:/app/reels
+    command: npm run dev
+    restart: unless-stopped
+
+  stream-recorder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vidops-stream-recorder
+    env_file:
+      - .env.example
+    volumes:
+      - ./basketball_output:/app/basketball_output
+    command: >
+      ffmpeg -y -re -f lavfi -i testsrc=size=1920x1080:rate=30
+      -f lavfi -i sine=frequency=440:sample_rate=44100
+      -t 60 -c:v libx264 -preset ultrafast -c:a aac
+      -f segment -segment_time 4 -reset_timestamps 1
+      /app/basketball_output/recording_segments/seg_%05d.mp4
+    profiles:
+      - recorder
+
+  basketball-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vidops-basketball-agent
+    env_file:
+      - .env.example
+    environment:
+      - DATACONNECT_EMULATOR_HOST=http://host.docker.internal:9399
+    volumes:
+      - ./basketball_output:/app/basketball_output
+      - ./clips:/app/clips
+      - ./reels:/app/reels
+    command: python worker/basketball_agent.py --video sample_game.mp4 --game-id GAME_001 --output /app/basketball_output
+    profiles:
+      - worker

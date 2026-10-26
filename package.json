@@ -1,0 +1,31 @@
+{
+  "name": "vidops",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "render": "remotion render remotion/index.ts MainComposition",
+    "studio": "remotion studio remotion/index.ts",
+    "dc:compile": "npx -y firebase-tools@latest dataconnect:compile",
+    "dc:sdk": "npx -y firebase-tools@latest dataconnect:sdk:generate",
+    "dc:emulator": "npx -y firebase-tools@latest emulators:start --only dataconnect"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.245",
+    "@remotion/player": "4.0.245",
+    "braintrust": "^3.39.0",
+    "firebase": "^11.4.0",
+    "next": "15.1.6",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.245"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

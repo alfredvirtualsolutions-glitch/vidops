@@ -1,0 +1,43 @@
+[
+  {
+    "event_id": "EVT_006",
+    "possession_id": "POSS_006",
+    "period_or_quarter": "Q4",
+    "game_clock": "00:11",
+    "video_timestamp_start": "00:01:28.000",
+    "video_timestamp_end": "00:01:32.500",
+    "clip_start_padded": "00:01:23.000",
+    "clip_end_padded": "00:01:37.500",
+    "clip_duration_sec": 14.5,
+    "team_in_possession": "AWAY",
+    "event_category": "DEFENSE",
+    "event_type": "STL",
+    "event_subtype": "Tipped deflection in traffic (occluded)",
+    "primary_player": "TEMP_TRACK_09_WHITE",
+    "secondary_player": "#01_BLUE",
+    "shot_zone": "MID_RANGE",
+    "points_scored": 0,
+    "score_home": "88",
+    "score_away": "86",
+    "score_differential": -2,
+    "is_clutch": true,
+    "is_fast_break": false,
+    "is_highlight_worthy": true,
+    "highlight_score": 64,
+    "confidence": 0.65,
+    "verification_status": "UNCERTAIN_REVIEW_REQUIRED",
+    "clip_state": "DETECTED",
+    "applied_effects": [
+      "turnover_transition",
+      "fast_break_intensity",
+      "finish_emphasis",
+      "duck_music_expose_crowd"
+    ],
+    "speed_ramp_profile": "100% -> 120% (transition) -> 100%",
+    "overlay_label": "CLUTCH",
+    "include_replay": false,
+    "story_section": "FINAL_MOMENTS",
+    "output_clip_filename": "006_Q4_00-01-28.000_STL_TEMP_TRACK_09_WHITE.mp4",
+    "notes": "Uncertain player jersey in crowded paint; assigned temporary tracking ID TEMP_TRACK_09_WHITE."
+  }
+]

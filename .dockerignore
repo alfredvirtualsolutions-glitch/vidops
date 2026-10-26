@@ -1,0 +1,10 @@
+node_modules
+.next
+.venv
+.venv-gpu
+.git
+__pycache__
+*.pyc
+tsconfig.tsbuildinfo
+basketball_output
+reels

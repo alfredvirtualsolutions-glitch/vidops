@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "vidops-service"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "vidopsdb"
+      cloudSql:
+        instanceId: "vidops-sql"
+      schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

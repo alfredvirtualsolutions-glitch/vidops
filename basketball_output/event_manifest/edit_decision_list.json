@@ -1,0 +1,186 @@
+[
+  {
+    "order": 1,
+    "story_phase": "1_HOOK",
+    "event_id": "EVT_004",
+    "clip_filename": "004_Q4_00-01-05.000_DUNK_MADE_#23_BLUE.mp4",
+    "start_ts": "00:01:00.000",
+    "end_ts": "00:01:16.500",
+    "duration_sec": 16.5,
+    "transition_in": "clean_hard_cut",
+    "transition_frames": 4,
+    "text_overlay": "CLUTCH",
+    "effects": [
+      "approach_speed_ramp",
+      "takeoff_slow_mo",
+      "impact_zoom",
+      "camera_shake",
+      "duck_music_expose_crowd"
+    ],
+    "speed_ramp": "115% (approach) -> 75% (takeoff) -> 100% (slam)",
+    "has_instant_replay": false,
+    "audio_mix": "game_audio_100pct_music_85pct"
+  },
+  {
+    "order": 2,
+    "story_phase": "4_BEST_PLAYS",
+    "event_id": "EVT_001",
+    "clip_filename": "001_Q1_00-00-12.400_3PT_MADE_#23_BLUE.mp4",
+    "start_ts": "00:00:07.400",
+    "end_ts": "00:00:22.200",
+    "duration_sec": 14.8,
+    "transition_in": "quick_zoom",
+    "transition_frames": 4,
+    "text_overlay": "FROM DEEP",
+    "effects": [
+      "digital_punch_in",
+      "quick_zoom_shooter",
+      "impact_flash",
+      "beat_sync"
+    ],
+    "speed_ramp": "100% -> 85% (release) -> 100% (splash)",
+    "has_instant_replay": false,
+    "audio_mix": "game_audio_100pct_music_80pct"
+  },
+  {
+    "order": 3,
+    "story_phase": "5_MOMENTUM_SEQUENCES",
+    "event_id": "EVT_002",
+    "clip_filename": "002_Q2_00-00-32.100_BLK_#11_WHITE.mp4",
+    "start_ts": "00:00:27.100",
+    "end_ts": "00:00:41.800",
+    "duration_sec": 14.7,
+    "transition_in": "quick_zoom",
+    "transition_frames": 4,
+    "text_overlay": "FAST BREAK",
+    "effects": [
+      "defensive_setup",
+      "contact_slow_mo",
+      "subtle_punch_in"
+    ],
+    "speed_ramp": "100% -> 75% (block_contact) -> 100%",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_80pct"
+  },
+  {
+    "order": 4,
+    "story_phase": "5_MOMENTUM_SEQUENCES_REPLAY",
+    "event_id": "EVT_002_REPLAY",
+    "clip_filename": "002_Q2_00-00-32.100_BLK_#11_WHITE.mp4",
+    "start_ts": "00:00:32.100",
+    "end_ts": "00:00:36.800",
+    "duration_sec": 4.7,
+    "transition_in": "brief_flash",
+    "transition_frames": 3,
+    "text_overlay": "REPLAY",
+    "effects": [
+      "tighter_crop_115pct",
+      "slow_motion_75pct"
+    ],
+    "speed_ramp": "75% Slow Motion Replay",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_70pct"
+  },
+  {
+    "order": 5,
+    "story_phase": "5_MOMENTUM_SEQUENCES",
+    "event_id": "EVT_003",
+    "clip_filename": "003_Q3_00-00-48.000_AST_#01_BLUE.mp4",
+    "start_ts": "00:00:43.000",
+    "end_ts": "00:00:57.400",
+    "duration_sec": 14.4,
+    "transition_in": "quick_zoom",
+    "transition_frames": 4,
+    "text_overlay": "FAST BREAK",
+    "effects": [
+      "ball_handler_tracking",
+      "crossover_zoom",
+      "pass_emphasis"
+    ],
+    "speed_ramp": "100% -> 80% (change_of_direction) -> 100%",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_80pct"
+  },
+  {
+    "order": 6,
+    "story_phase": "5_MOMENTUM_SEQUENCES_REPLAY",
+    "event_id": "EVT_003_REPLAY",
+    "clip_filename": "003_Q3_00-00-48.000_AST_#01_BLUE.mp4",
+    "start_ts": "00:00:48.000",
+    "end_ts": "00:00:52.400",
+    "duration_sec": 4.4,
+    "transition_in": "brief_flash",
+    "transition_frames": 3,
+    "text_overlay": "REPLAY",
+    "effects": [
+      "tighter_crop_115pct",
+      "slow_motion_75pct"
+    ],
+    "speed_ramp": "75% Slow Motion Replay",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_70pct"
+  },
+  {
+    "order": 7,
+    "story_phase": "6_FINAL_MOMENTS",
+    "event_id": "EVT_004",
+    "clip_filename": "004_Q4_00-01-05.000_DUNK_MADE_#23_BLUE.mp4",
+    "start_ts": "00:01:00.000",
+    "end_ts": "00:01:16.500",
+    "duration_sec": 16.5,
+    "transition_in": "quick_zoom",
+    "transition_frames": 4,
+    "text_overlay": "CLUTCH",
+    "effects": [
+      "approach_speed_ramp",
+      "takeoff_slow_mo",
+      "impact_zoom",
+      "camera_shake",
+      "duck_music_expose_crowd"
+    ],
+    "speed_ramp": "115% (approach) -> 75% (takeoff) -> 100% (slam)",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_35pct_ducked"
+  },
+  {
+    "order": 8,
+    "story_phase": "6_FINAL_MOMENTS_REPLAY",
+    "event_id": "EVT_004_REPLAY",
+    "clip_filename": "004_Q4_00-01-05.000_DUNK_MADE_#23_BLUE.mp4",
+    "start_ts": "00:01:05.000",
+    "end_ts": "00:01:11.500",
+    "duration_sec": 6.5,
+    "transition_in": "brief_flash",
+    "transition_frames": 3,
+    "text_overlay": "REPLAY",
+    "effects": [
+      "tighter_crop_115pct",
+      "slow_motion_75pct"
+    ],
+    "speed_ramp": "75% Slow Motion Replay",
+    "has_instant_replay": true,
+    "audio_mix": "game_audio_100pct_music_70pct"
+  },
+  {
+    "order": 9,
+    "story_phase": "6_FINAL_MOMENTS",
+    "event_id": "EVT_005",
+    "clip_filename": "005_Q4_00-01-15.000_3PT_MADE_#11_WHITE.mp4",
+    "start_ts": "00:01:10.000",
+    "end_ts": "00:01:24.800",
+    "duration_sec": 14.8,
+    "transition_in": "quick_zoom",
+    "transition_frames": 4,
+    "text_overlay": "CLUTCH",
+    "effects": [
+      "digital_punch_in",
+      "quick_zoom_shooter",
+      "impact_flash",
+      "beat_sync",
+      "duck_music_expose_crowd"
+    ],
+    "speed_ramp": "100% -> 85% (release) -> 100% (splash)",
+    "has_instant_replay": false,
+    "audio_mix": "game_audio_100pct_music_35pct_ducked"
+  }
+]

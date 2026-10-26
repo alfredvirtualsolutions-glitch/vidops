@@ -1,0 +1,138 @@
+mutation UpsertClip(
+  $id: UUID!
+  $key: String!
+  $url: String!
+  $name: String!
+  $category: String!
+  $duration: Float
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  clip_upsert(
+    data: {
+      id: $id
+      key: $key
+      url: $url
+      name: $name
+      category: $category
+      duration: $duration
+    }
+  )
+}
+
+mutation CreateAudioTrack(
+  $prompt: String!
+  $url: String!
+  $duration: Float
+  $isFallback: Boolean!
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  audioTrack_insert(
+    data: {
+      prompt: $prompt
+      url: $url
+      duration: $duration
+      isFallback: $isFallback
+    }
+  )
+}
+
+mutation CreateReel(
+  $title: String!
+  $reelType: String!
+  $audioTrackId: UUID
+  $audioVolume: Float
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reel_insert(
+    data: {
+      title: $title
+      reelType: $reelType
+      audioTrackId: $audioTrackId
+      audioVolume: $audioVolume
+    }
+  )
+}
+
+mutation AddClipToReel(
+  $reelId: UUID!
+  $position: Int!
+  $clipId: UUID!
+  $objectFit: String!
+  $volume: Float!
+  $effects: [String!]
+  $durationInSeconds: Float
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reelClip_upsert(
+    data: {
+      reelId: $reelId
+      position: $position
+      clipId: $clipId
+      objectFit: $objectFit
+      volume: $volume
+      effects: $effects
+      durationInSeconds: $durationInSeconds
+    }
+  )
+}
+
+mutation UpdateReelStatus(
+  $id: UUID!
+  $status: String!
+  $outputUrl: String
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reel_update(
+    id: $id
+    data: {
+      status: $status
+      outputUrl: $outputUrl
+      updatedAt_expr: "request.time"
+    }
+  )
+}
+
+mutation DeleteReel($id: UUID!) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reel_delete(id: $id)
+}
+
+mutation UpsertGame(
+  $id: UUID!
+  $gameCode: String!
+  $homeTeam: String!
+  $awayTeam: String!
+  $status: String!
+  $scoreHome: Int
+  $scoreAway: Int
+  $periodOrQuarter: String
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  game_upsert(
+    data: {
+      id: $id
+      gameCode: $gameCode
+      homeTeam: $homeTeam
+      awayTeam: $awayTeam
+      status: $status
+      scoreHome: $scoreHome
+      scoreAway: $scoreAway
+      periodOrQuarter: $periodOrQuarter
+    }
+  )
+}
+
+mutation CreateAuditLog(
+  $gameId: UUID
+  $entityType: String!
+  $entityId: String!
+  $action: String!
+  $previousValue: String
+  $newValue: String
+  $operator: String!
+) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  auditLog_insert(
+    data: {
+      gameId: $gameId
+      entityType: $entityType
+      entityId: $entityId
+      action: $action
+      previousValue: $previousValue
+      newValue: $newValue
+      operator: $operator
+    }
+  )
+}

@@ -1,0 +1,167 @@
+type Clip @table {
+  id: UUID! @default(expr: "uuidV4()")
+  key: String! @unique
+  url: String!
+  name: String!
+  category: String! @index
+  duration: Float
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type AudioTrack @table {
+  id: UUID! @default(expr: "uuidV4()")
+  prompt: String!
+  url: String!
+  duration: Float @default(value: 60.0)
+  isFallback: Boolean! @default(value: false)
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type Reel @table {
+  id: UUID! @default(expr: "uuidV4()")
+  title: String!
+  reelType: String! @index
+  width: Int! @default(value: 1080)
+  height: Int! @default(value: 1920)
+  fps: Int! @default(value: 30)
+  audioTrack: AudioTrack
+  audioVolume: Float! @default(value: 0.8)
+  status: String! @default(value: "DRAFT")
+  outputUrl: String
+  createdAt: Timestamp! @default(expr: "request.time")
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
+type ReelClip @table(key: ["reel", "position"]) {
+  reel: Reel!
+  position: Int!
+  clip: Clip!
+  objectFit: String! @default(value: "cover")
+  volume: Float! @default(value: 1.0)
+  effects: [String!]
+  durationInSeconds: Float @default(value: 8.0)
+}
+
+# ---------------------------------------------------------------------------
+# PRD v1.0 & mvD.md — 10 Core Tables for Live Basketball AI Clipper & MVP Agent
+# ---------------------------------------------------------------------------
+
+type Game @table {
+  id: UUID! @default(expr: "uuidV4()")
+  gameCode: String! @unique
+  homeTeam: String!
+  awayTeam: String!
+  status: String! @default(value: "NOT_CONNECTED") @index
+  scoreHome: Int @default(value: 0)
+  scoreAway: Int @default(value: 0)
+  periodOrQuarter: String @default(value: "Q1")
+  startedAt: Timestamp @default(expr: "request.time")
+  endedAt: Timestamp
+}
+
+type StreamSource @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  inputType: String!
+  facebookUrl: String
+  embedReference: String
+  directMediaUrl: String
+  accessStatus: String! @default(value: "PREVIEW_ONLY_NO_MEDIA") @index
+  statusMessage: String
+  verifiedAt: Timestamp @default(expr: "request.time")
+}
+
+type RecordingSegment @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  segmentIndex: Int!
+  startTimestamp: String!
+  endTimestamp: String!
+  durationSec: Float!
+  fileLocation: String!
+  integrityStatus: String! @default(value: "VALID")
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type Player @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  trackingId: String! @index
+  team: String!
+  jerseyNumber: String!
+  playerName: String
+  isIdentityVerified: Boolean! @default(value: false)
+}
+
+type GameEvent @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  eventCode: String! @index
+  eventCategory: String!
+  eventType: String! @index
+  eventSubtype: String
+  periodOrQuarter: String!
+  gameClock: String
+  videoTimestampStart: String!
+  videoTimestampEnd: String!
+  clipStartPadded: String!
+  clipEndPadded: String!
+  pointsScored: Int! @default(value: 0)
+  highlightScore: Int! @default(value: 0)
+  confidence: Float! @default(value: 0.0)
+  verificationStatus: String! @default(value: "DETECTED") @index
+  clipState: String! @default(value: "DETECTED")
+  sourceSegmentRef: String
+  clipPath: String
+  notes: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type PlayerEvent @table(key: ["player", "event"]) {
+  player: Player!
+  event: GameEvent!
+  role: String! @default(value: "PRIMARY")
+  attributionConfidence: Float! @default(value: 0.9)
+  sourceEvidence: String
+}
+
+type MvpCandidate @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  player: Player!
+  rankOrder: Int!
+  performanceScore: Float!
+  highlightScore: Float!
+  confirmedPoints: Int! @default(value: 0)
+  confirmedAssists: Int! @default(value: 0)
+  confirmedBlocksSteals: Int! @default(value: 0)
+  clutchPlaysCount: Int! @default(value: 0)
+  evidenceClipIds: [String!]
+  candidateStatus: String! @default(value: "VIDEO_BASED_PROVISIONAL")
+  reelPath: String
+  updatedAt: Timestamp! @default(expr: "request.time")
+}
+
+type RenderJob @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  videoType: String!
+  aspectRatio: String! @default(value: "9:16")
+  progressPct: Int! @default(value: 0)
+  status: String! @default(value: "QUEUED")
+  outputPath: String
+  errorMessage: String
+  createdAt: Timestamp! @default(expr: "request.time")
+}
+
+type AuditLog @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game
+  entityType: String!
+  entityId: String!
+  action: String!
+  previousValue: String
+  newValue: String
+  operator: String! @default(value: "operator")
+  createdAt: Timestamp! @default(expr: "request.time")
+}

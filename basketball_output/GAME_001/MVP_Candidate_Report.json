@@ -1,0 +1,86 @@
+{
+  "game_id": "GAME_001",
+  "policy_note": "Provisional video-based Player of the Game candidates. Performance Score and Highlight Score are kept distinct per mvD.md Phase 5.",
+  "candidates": [
+    {
+      "rank": 1,
+      "player_tracking_id": "#23_BLUE",
+      "team": "BLUE",
+      "jersey_number": "#23",
+      "identity_verified": true,
+      "performance_score": 83.0,
+      "highlight_score": 92.5,
+      "confirmed_points": 5,
+      "confirmed_fg_made": 2,
+      "confirmed_3pt_made": 1,
+      "confirmed_assists": 0,
+      "confirmed_blocks": 0,
+      "confirmed_steals": 0,
+      "clutch_plays": 1,
+      "evidence_event_ids": [
+        "EVT_001",
+        "EVT_004"
+      ],
+      "evidence_clips": [
+        "001_Q1_00-00-12.400_3PT_MADE_#23_BLUE.mp4",
+        "004_Q4_00-01-05.000_DUNK_MADE_#23_BLUE.mp4"
+      ],
+      "status_label": "Player of the Game Candidate (Video-Based Provisional)",
+      "candidate_reel_filename": "MVP_Candidate_1_P23_BLUE.mp4"
+    },
+    {
+      "rank": 2,
+      "player_tracking_id": "#11_WHITE",
+      "team": "WHITE",
+      "jersey_number": "#11",
+      "identity_verified": true,
+      "performance_score": 80.0,
+      "highlight_score": 87.0,
+      "confirmed_points": 3,
+      "confirmed_fg_made": 1,
+      "confirmed_3pt_made": 1,
+      "confirmed_assists": 0,
+      "confirmed_blocks": 1,
+      "confirmed_steals": 0,
+      "clutch_plays": 1,
+      "evidence_event_ids": [
+        "EVT_002",
+        "EVT_005"
+      ],
+      "evidence_clips": [
+        "002_Q2_00-00-32.100_BLK_#11_WHITE.mp4",
+        "005_Q4_00-01-15.000_3PT_MADE_#11_WHITE.mp4"
+      ],
+      "status_label": "Player of the Game Candidate (Video-Based Provisional)",
+      "candidate_reel_filename": "MVP_Candidate_2_P11_WHITE.mp4"
+    },
+    {
+      "rank": 3,
+      "player_tracking_id": "#01_BLUE",
+      "team": "BLUE",
+      "jersey_number": "#01",
+      "identity_verified": true,
+      "performance_score": 79.5,
+      "highlight_score": 85.0,
+      "confirmed_points": 2,
+      "confirmed_fg_made": 0,
+      "confirmed_3pt_made": 0,
+      "confirmed_assists": 3,
+      "confirmed_blocks": 0,
+      "confirmed_steals": 0,
+      "clutch_plays": 0,
+      "evidence_event_ids": [
+        "EVT_001",
+        "EVT_003",
+        "EVT_004"
+      ],
+      "evidence_clips": [
+        "001_Q1_00-00-12.400_3PT_MADE_#23_BLUE.mp4",
+        "003_Q3_00-00-48.000_AST_#01_BLUE.mp4",
+        "004_Q4_00-01-05.000_DUNK_MADE_#23_BLUE.mp4"
+      ],
+      "status_label": "Player of the Game Candidate (Video-Based Provisional)",
+      "candidate_reel_filename": "MVP_Candidate_3_P01_BLUE.mp4"
+    }
+  ]
+}

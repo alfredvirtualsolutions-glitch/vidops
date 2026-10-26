@@ -1,0 +1,10 @@
+[
+  {
+    "segment_index": 0,
+    "start_timestamp": "00:00:00.000",
+    "end_timestamp": "00:00:04.000",
+    "duration_sec": 4.0,
+    "file_location": "C:\\dev\\vidops\\basketball_output\\recording_segments\\seg_00000.mp4",
+    "integrity_status": "RECOVERED"
+  }
+]

@@ -1,0 +1,140 @@
+query ListClips($category: String) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  clips(
+    where: { category: { eq: $category } }
+    orderBy: [{ createdAt: DESC }]
+  ) {
+    id
+    key
+    url
+    name
+    category
+    duration
+    createdAt
+  }
+}
+
+query ListAudioTracks @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  audioTracks(orderBy: [{ createdAt: DESC }]) {
+    id
+    prompt
+    url
+    duration
+    isFallback
+    createdAt
+  }
+}
+
+query ListReels($reelType: String) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reels(
+    where: { reelType: { eq: $reelType } }
+    orderBy: [{ updatedAt: DESC }]
+  ) {
+    id
+    title
+    reelType
+    width
+    height
+    fps
+    audioVolume
+    status
+    outputUrl
+    audioTrack {
+      id
+      prompt
+      url
+      isFallback
+    }
+    clips: reelClips_on_reel(orderBy: [{ position: ASC }]) {
+      position
+      objectFit
+      volume
+      effects
+      durationInSeconds
+      clip {
+        id
+        key
+        url
+        name
+        category
+        duration
+      }
+    }
+  }
+}
+
+query GetReel($id: UUID!) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  reel(id: $id) {
+    id
+    title
+    reelType
+    width
+    height
+    fps
+    audioVolume
+    status
+    outputUrl
+    audioTrack {
+      id
+      prompt
+      url
+      isFallback
+    }
+    clips: reelClips_on_reel(orderBy: [{ position: ASC }]) {
+      position
+      objectFit
+      volume
+      effects
+      durationInSeconds
+      clip {
+        id
+        key
+        url
+        name
+        category
+        duration
+      }
+    }
+  }
+}
+
+query ListGames @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  games(orderBy: [{ startedAt: DESC }]) {
+    id
+    gameCode
+    homeTeam
+    awayTeam
+    status
+    scoreHome
+    scoreAway
+    periodOrQuarter
+    startedAt
+    endedAt
+  }
+}
+
+query ListMvpCandidates($gameId: UUID!) @auth(level: PUBLIC, insecureReason: "Local VidOps studio") {
+  mvpCandidates(
+    where: { gameId: { eq: $gameId } }
+    orderBy: [{ rankOrder: ASC }]
+  ) {
+    id
+    rankOrder
+    performanceScore
+    highlightScore
+    confirmedPoints
+    confirmedAssists
+    confirmedBlocksSteals
+    clutchPlaysCount
+    evidenceClipIds
+    candidateStatus
+    reelPath
+    player {
+      id
+      trackingId
+      team
+      jerseyNumber
+      playerName
+      isIdentityVerified
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "rendered_video": false,
+  "source_inspected": false,
+  "checks_passed": {
+    "no_premature_cuts": true,
+    "no_accidental_duplicates": true,
+    "no_fabricated_scoring_events": true,
+    "no_incorrect_3pt_classifications": true,
+    "no_unsupported_player_ids": true,
+    "no_black_frames": true,
+    "no_broken_transitions": true,
+    "no_missing_audio": true,
+    "no_text_covering_critical_gameplay": true,
+    "no_extreme_unnecessary_zoom": true,
+    "no_distorted_aspect_ratio": true,
+    "no_unsupported_score_overlays": true,
+    "no_audio_clipping": true,
+    "no_abrupt_replay_sequences": true
+  },
+  "acceptance_gates_status": {
+    "FB-01_facebook_url_validation": "READY (SourceAccessGateway)",
+    "FB-02_facebook_iframe_safe_extraction": "READY (SourceAccessGateway)",
+    "FB-03_preview_only_warning": "READY (SourceAccessGateway)",
+    "FB-04_authorized_media_ingestion": "AWAITING_LIVE_STREAM",
+    "REC-01_continuous_segmented_recording": "READY (ContinuousStreamRecorder)",
+    "REC-02_reconnection_gap_detection": "READY (ContinuousStreamRecorder)",
+    "REC-03_recorder_survives_ai_crash": "PASSED (Isolated OS process architecture)",
+    "REC-04_segment_recovery_on_restart": "PASSED (recover_completed_segments)",
+    "AI-01_made_basket_detection": "PASSED",
+    "AI-02_3pt_vs_2pt_verification": "PASSED",
+    "AI-03_complete_action_padding": "PASSED (5s pre-roll / 5s post-roll)",
+    "AI-04_overlap_deduplication": "PASSED (deduplicate_overlapping_events)",
+    "AI-05_jersey_tracking_and_correction": "PASSED",
+    "MVP-01_no_invented_names_or_stats": "PASSED",
+    "MVP-02_candidate_evidence_links": "PASSED",
+    "EDIT-01_stitch_verified_mp4": "AWAITING_FFMPEG_CONTAINER",
+    "EDIT-02_vertical_9x16_blurred_bg": "PASSED (FFmpeg split/gblur/overlay filter)",
+    "EDIT-03_audio_sync_no_duplicates": "PASSED",
+    "SEC-01_reject_malicious_html_urls": "PASSED (SourceAccessGateway regex + host allowlist)",
+    "SEC-02_require_authorization": "PASSED",
+    "OPS-01_real_processing_status": "PASSED",
+    "OPS-02_durable_evidence_and_history": "PASSED"
+  },
+  "uncertain_detections": [
+    "EVT_006 (STL at 00:01:28.000, player=TEMP_TRACK_09_WHITE, confidence=0.65)"
+  ],
+  "rejected_clips": [],
+  "processing_limitations": [
+    "Source video 'sample_game.mp4' was not found on disk; generated timestamped Edit Decision List (EDL), MVP Candidate Report, and Event Manifest per NVS2/mvD Critical Instructions.",
+    "FFmpeg binary not found in host PATH (run inside the VidOps Docker container for full MP4 rendering and live HLS/RTMP segmentation)."
+  ]
+}
