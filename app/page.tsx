@@ -167,8 +167,8 @@ export default function BasketballAiStudio() {
   const [busy, setBusy] = useState(false);
   const playerRef = useRef<PlayerRef | null>(null);
 
-  // GitHub App User-to-Server Auth state (acting on behalf of alfredkeybusiness-eng / Chubby Genius)
-  const [ghClientId, setGhClientId] = useState("");
+  // GitHub App User-to-Server Auth state (acting on behalf of alfredkeybusiness-eng / Chubby Genius, App ID: 5173239)
+  const [ghClientId, setGhClientId] = useState("Iv23liAMEZjD4rPtZhe5");
   const [ghUserToken, setGhUserToken] = useState("");
   const [ghDeviceInfo, setGhDeviceInfo] = useState<{
     device_code?: string;
@@ -770,15 +770,17 @@ export default function BasketballAiStudio() {
                 </ul>
 
                 <h2 style={{ marginTop: 18 }}>
-                  GitHub App User-to-Server Actions (On Behalf of @alfredkeybusiness-eng)
+                  GitHub App User-to-Server Actions (App ID: 5173239 · @alfredkeybusiness-eng)
                 </h2>
                 <div className="field">
-                  <label htmlFor="ghClientId">GitHub App Client ID (for Device Flow)</label>
+                  <label htmlFor="ghClientId">
+                    GitHub App Client ID (Default: <code>Iv23liAMEZjD4rPtZhe5</code>)
+                  </label>
                   <input
                     id="ghClientId"
                     value={ghClientId}
                     onChange={(e) => setGhClientId(e.target.value)}
-                    placeholder="Iv1.xxxxxxxx or Iv23xxxxxxxx"
+                    placeholder="Iv23liAMEZjD4rPtZhe5"
                   />
                 </div>
                 <div className="field">

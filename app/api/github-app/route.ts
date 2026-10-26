@@ -25,16 +25,17 @@ function githubHeaders(userAccessToken: string): HeadersInit {
 }
 
 export async function GET() {
-  const clientId = process.env.GITHUB_APP_CLIENT_ID ?? "";
+  const appId = process.env.GITHUB_APP_ID || "5173239";
+  const clientId = process.env.GITHUB_APP_CLIENT_ID || "Iv23liAMEZjD4rPtZhe5";
   const hasUserToken = Boolean(process.env.GITHUB_USER_ACCESS_TOKEN);
   return NextResponse.json({
     ok: true,
     configured: Boolean(clientId || hasUserToken),
-    clientId: clientId || null,
+    owner: "alfredkeybusiness-eng",
+    appId,
+    clientId,
     hasEnvUserToken: hasUserToken,
-    authorizeUrl: clientId
-      ? `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(clientId)}`
-      : "https://github.com/settings/apps",
+    authorizeUrl: `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(clientId)}`,
   });
 }
 
@@ -60,7 +61,12 @@ export async function POST(req: Request) {
       environment?: string;
     };
 
-    const clientId = (body.clientId || process.env.GITHUB_APP_CLIENT_ID || "").trim();
+    const appId = process.env.GITHUB_APP_ID || "5173239";
+    const clientId = (
+      body.clientId ||
+      process.env.GITHUB_APP_CLIENT_ID ||
+      "Iv23liAMEZjD4rPtZhe5"
+    ).trim();
     const clientSecret = (
       body.clientSecret ||
       process.env.GITHUB_APP_CLIENT_SECRET ||
