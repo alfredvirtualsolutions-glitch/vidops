@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-browser": {
+      "source": "inference-sh/skills",
+      "sourceType": "github",
+      "skillPath": "tools/utilities/agent-browser/SKILL.md",
+      "computedHash": "39ad19a8a5f98fbb4cdcdffdba5eb9a10f13926876c40638697ed1c87ddd2143"
+    },
+    "image-to-video": {
+      "source": "doany-ai/skills",
+      "sourceType": "github",
+      "skillPath": "image-to-video/SKILL.md",
+      "computedHash": "ff4a666a6db5af1c3aefe40c6379dd445177cfaa2bd51a1834c4ccf476ffd882"
+    },
+    "media-use": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/media-use/SKILL.md",
+      "computedHash": "372fda62380e0d70f540c4d413af8bc2d89b03c99d85cb557e0e1f0e3e7d79b5"
+    },
+    "python-executor": {
+      "source": "inference-sh/skills",
+      "sourceType": "github",
+      "skillPath": "tools/utilities/python-executor/SKILL.md",
+      "computedHash": "943110e8753d078653f98e3208f12d9d1ab66136895967f64ff2ab672e6eb6c5"
+    },
+    "remotion-studio": {
+      "source": "remotion-dev/skills",
+      "sourceType": "github",
+      "skillPath": "skills/remotion-studio/SKILL.md",
+      "computedHash": "50584e0493ddb2186eae2f24dcbc72e76e25ed206870c2573d71c6cd6eaed93f"
+    },
+    "video-edit": {
+      "source": "prime-skills/runcomfy-agent-skills",
+      "sourceType": "github",
+      "skillPath": "video-edit/SKILL.md",
+      "computedHash": "f5e3dae395e536ff13fb2f66c20bbe84120739c161ff4a95b9c9e168b4d84105"
+    }
+  }
+}
