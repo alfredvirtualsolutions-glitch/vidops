@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: vidops-basketball-ai-studio
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: GITHUB_APP_ID
+        value: "5173239"
+      - key: GITHUB_APP_CLIENT_ID
+        value: "Iv23liAMEZjD4rPtZhe5"
+      - key: GEMINI_API_KEY
+        sync: false
