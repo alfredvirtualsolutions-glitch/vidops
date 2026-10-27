@@ -9,25 +9,37 @@
 [![Podman / Docker](https://img.shields.io/badge/Container-Podman_%7C_Docker-blue?logo=docker)](https://podman.io/)
 [![Braintrust](https://img.shields.io/badge/Observability-Braintrust-teal)](https://www.braintrust.dev/)
 [![Firebase](https://img.shields.io/badge/Backend-Firebase_SQL_Connect-FFCA28?logo=firebase)](https://firebase.google.com/)
+[![GitHub App](https://img.shields.io/badge/GitHub_App-ID:5173239-181717?logo=github)](https://github.com/apps/vidops-basketball-ai-studio)
 
 ---
 
 ## 📑 Table of Contents
 1. [Core Architectural Philosophy](#-core-architectural-philosophy)
 2. [End-to-End System Architecture](#-end-to-end-system-architecture)
-3. [The 13-Phase Processing Pipeline](#-the-13-phase-processing-pipeline)
-4. [Dual-Score MVP Candidate Algorithm](#-dual-score-mvp-candidate-algorithm)
-5. [5-Screen Basketball AI Studio UI Walkthrough](#-5-screen-basketball-ai-studio-ui-walkthrough)
-   - [Screen 1: Games & Source](#screen-1-games--source-ingest--security-gateway)
-   - [Screen 2: Live Monitor](#screen-2-live-monitor-real-time-commentary--stream-telemetry)
-   - [Screen 3: Clip Library](#screen-3-clip-library-event-verification--speed-ramps)
-   - [Screen 4: MVP Candidate Leaderboard](#screen-4-mvp-candidate-leaderboard-dual-score-evidence)
-   - [Screen 5: Production & Exports](#screen-5-production--exports-916-remotion-studio)
-6. [Delivery Package Structure](#-delivery-package-structure)
-7. [Quickstart & Local Setup](#-quickstart--local-setup)
-8. [Docker & Podman Deployment](#-docker--podman-deployment)
-9. [Environment Configuration](#-environment-configuration)
-10. [Cloud & Hugging Face Deployments](#-cloud--hugging-face-deployments)
+3. [Visual Transformations & Timing Mechanics](#-visual-transformations--timing-mechanics)
+   - [16:9 Broadcast to 9:16 Vertical Reel Transformation](#1-169-broadcast-to-916-vertical-reel-transformation)
+   - [Apex Speed Ramping Velocity Curve](#2-apex-speed-ramping-velocity-curve)
+   - [Possession Boundary Padding Timeline](#3-possession-boundary-padding-timeline)
+4. [Live Recording & AI Sequence Workflows](#-live-recording--ai-sequence-workflows)
+   - [Continuous Stream Ingest & Fault-Tolerant Recording](#1-continuous-stream-ingest--fault-tolerant-recording)
+   - [Live Multimodal Event Detection & Real-Time Commentary](#2-live-multimodal-event-detection--real-time-commentary)
+5. [The 13-Phase Processing Pipeline](#-the-13-phase-processing-pipeline)
+6. [Dual-Score MVP Candidate Algorithm](#-dual-score-mvp-candidate-algorithm)
+7. [5-Screen Basketball AI Studio UI Walkthrough](#-5-screen-basketball-ai-studio-ui-walkthrough)
+   - [Screen 1: Games & Source (Ingest & Security Gateway)](#screen-1-games--source-ingest--security-gateway)
+   - [Screen 2: Live Monitor (Commentary & Telemetry)](#screen-2-live-monitor-real-time-commentary--stream-telemetry)
+   - [Screen 3: Clip Library (Event Verification & Speed Ramps)](#screen-3-clip-library-event-verification--speed-ramps)
+   - [Screen 4: MVP Candidate Leaderboard (Dual-Score Proof)](#screen-4-mvp-candidate-leaderboard-dual-score-evidence)
+   - [Screen 5: Production & Exports (9:16 Remotion Studio)](#screen-5-production--exports-916-remotion-studio)
+8. [Comprehensive API & Backend Reference](#-comprehensive-api--backend-reference)
+9. [Firebase SQL Connect (PostgreSQL Database Schema)](#-firebase-sql-connect-postgresql-database-schema)
+10. [Video Ecosystem & AI MCP Integrations](#-video-ecosystem--ai-mcp-integrations)
+11. [Delivery Package Structure](#-delivery-package-structure)
+12. [Quickstart & Local Setup](#-quickstart--local-setup)
+13. [Hardware Acceleration & GPU Setup](#-hardware-acceleration--gpu-setup)
+14. [Docker & Podman Deployment](#-docker--podman-deployment)
+15. [Environment Configuration](#-environment-configuration)
+16. [Cloud & Hugging Face Deployments](#-cloud--hugging-face-deployments)
 
 ---
 
@@ -108,9 +120,140 @@ flowchart TD
 
 ---
 
+## 🎨 Visual Transformations & Timing Mechanics
+
+### 1. 16:9 Broadcast to 9:16 Vertical Reel Transformation
+To transform standard 16:9 landscape broadcasts into mobile-first 9:16 social vertical reels (TikTok, Instagram Reels, YouTube Shorts) without awkward letterboxing or squishing, VidOps applies a **triple-layer composite**:
+
+```
+ 16:9 BROADCAST FEED (1920x1080)             9:16 VERTICAL REEL (1080x1920)
+┌─────────────────────────────────┐          ┌──────────────────────────┐
+│                                 │          │  GAUSSIAN BLURRED BG     │
+│       [ 16:9 ACTION FRAME ]     │          │  (Scale: 320%, Blur: 25px│
+│                                 │          │                          │
+│                                 │   ───►   ├──────────────────────────┤
+│                                 │          │  CENTER CROPPED ACTION   │
+│   🏀 #12 Drives to the Basket   │          │  (Dynamic Pan & Scan     │
+│                                 │          │   Centering Ball/Player) │
+│                                 │          ├──────────────────────────┤
+└─────────────────────────────────┘          │  HUD & LOWER THIRD OVERLAY│
+                                             │  [#12 DUNK! | +2 PTS]    │
+                                             │  [Score: 84 - 82 | Q4]   │
+                                             └──────────────────────────┘
+```
+
+- **Top & Bottom Layer**: Scaled-up source frame with a 25px Gaussian blur.
+- **Center Foreground**: Unstretched, sharp action frame focused dynamically on the ball and scoring player.
+- **Graphic HUD**: Animated score bug, player tracking badge, and play event lower third.
+
+---
+
+### 2. Apex Speed Ramping Velocity Curve
+High-impact basketball plays (poster dunks, chase-down blocks, buzzer beaters) undergo dynamic speed ramping. Rather than simple linear slow-motion, VidOps applies an S-curve ease:
+
+```
+Playback
+Velocity (%)
+ 100% ────────┐                                            ┌─────── 100% (Normal Playback)
+              │                                            │
+  70%          \                                          /
+                \                                        /
+  40%            └───────────┐              ┌───────────┘
+                             │  APEX SLOW   │
+  20%                        │  [DUNK RELEASE/             (Apex Slow-Motion)
+                             │   BLOCK CONTACT]
+   0% ───────────────────────┴──────────────┴──────────────────────
+          0.0s              1.5s           2.5s          4.0s
+       [APPROACH]        [TAKEOFF]       [LANDING]    [CELEBRATION]
+```
+
+1. **Approach ($100\%$)**: Normal real-time speed as the player penetrates or receives the pass.
+2. **Takeoff Deceleration ($100\% \to 40\%$)**: Smooth deceleration as the player elevates.
+3. **Apex Hold ($40\%$)**: Slow-motion focus on the precise moment of rim contact or block rejection.
+4. **Landing & Celebration ($40\% \to 100\%$)**: Immediate return to full speed for the landing and bench reaction.
+
+---
+
+### 3. Possession Boundary Padding Timeline
+A basketball clip is incomplete without its tactical setup and emotional payoff. Every event is extracted with **asymmetric pre-roll and post-roll boundary padding**:
+
+```
+Time ──►
+│◄─────── 3.5s Pre-Roll ───────►│◄─── Core Event ───►│◄────── 2.5s Post-Roll ──────►│
+┌───────────────────────────────┬────────────────────┬──────────────────────────────┐
+│  Possession Setup             │  Shot / Dunk /     │  Ball Clears Net /           │
+│  • Crossover / Isolation      │  Block Attempt     │  Defensive Rebound           │
+│  • Screen & Roll Action       │  • Apex Moment     │  • Bench & Crowd Reaction    │
+│  • Entry Pass                 │  • Whistle Blow    │  • High-Fives / Timeout Call │
+└───────────────────────────────┴────────────────────┴──────────────────────────────┘
+▲                                                    ▲                              ▲
+Clip Start (Padded)                               Event Apex                     Clip End (Padded)
+```
+
+---
+
+## 🔄 Live Recording & AI Sequence Workflows
+
+### 1. Continuous Stream Ingest & Fault-Tolerant Recording
+The stream recording service operates on a strict non-blocking producer-consumer model:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Stream as Facebook / RTMP CDN
+    participant Gateway as Source Access Gateway
+    participant Recorder as Continuous Recorder (FFmpeg)
+    participant Disk as Segment Storage (Disk)
+    participant AI as Basketball AI Agent
+
+    Gateway->>Stream: Probe & Validate Stream URL (SEC-01/02)
+    Gateway-->>Recorder: Spawn Child FFmpeg Process
+    loop Every 4 Seconds
+        Stream->>Recorder: H.264 / AAC Transport Stream
+        Recorder->>Disk: Commit seg_0000X.mp4 & update index.json
+        Disk-->>AI: File Written Notification
+    end
+    Note over AI,Disk: AI runs asynchronously.<br/>If AI crashes or stalls, Disk writes continue!
+    opt Network Interruption
+        Stream--xRecorder: Packet Drop / Disconnect
+        Recorder->>Disk: Log MISSING_INTERVAL gap
+        Recorder->>Stream: Auto-reconnect with exponential backoff
+        Recorder->>Disk: Resume seg_0000(X+1).mp4
+    end
+```
+
+---
+
+### 2. Live Multimodal Event Detection & Real-Time Commentary
+While segments land on disk, the AI agent performs visual inspection and live commentary:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Seg as Segment seg_000XX.mp4
+    participant Agent as Basketball AI Agent
+    participant Gemini as Google Gemini 3.1 Pro
+    participant LiveAPI as Gemini 3.8 Live API
+    participant Studio as Studio Dashboard (UI)
+
+    Agent->>Seg: Read 4s Video Chunk + Audio
+    par Visual Event Detection
+        Agent->>Gemini: Multimodal Analysis (Jersey #, Ball Path, Score)
+        Gemini-->>Agent: JSON Detection (3PT Made, #12 White, +3 PTS)
+        Agent->>Studio: Update Event Feed & Clip Library (Screen 3)
+    and Audio Commentary Stream
+        Agent->>LiveAPI: Stream Ambient Game Audio
+        LiveAPI-->>Studio: WebSocket Stream: Real-Time Commentary (Screen 2)
+    end
+    Agent->>Agent: Compute Dual-Score MVP Metrics
+    Agent->>Studio: Refresh MVP Leaderboard (Screen 4)
+```
+
+---
+
 ## ⚡ The 13-Phase Processing Pipeline
 
-VidOps implements the complete 13-phase basketball intelligence specification defined in `worker/mvD.md`, `worker/mvs.md`, and `worker/NVS2.md`:
+VidOps implements the complete 13-phase basketball intelligence specification:
 
 | Phase | Designation | Key Responsibilities | Standards Met |
 | :--- | :--- | :--- | :--- |
@@ -141,6 +284,7 @@ $$S_{\text{perf}} = \min\left(100, \; 3.0 \cdot \text{PTS} + 4.0 \cdot \text{AST
 ### 2. Highlight Score ($S_{\text{high}} \in [0, 100]$)
 Quantifies visual excitement, difficulty, crowd reaction, and social shareability:
 $$S_{\text{high}} = \frac{1}{N} \sum_{i=1}^{N} \left( W_{\text{type}}(e_i) \cdot C_{\text{crowd}}(e_i) \cdot D_{\text{difficulty}}(e_i) \right)$$
+
 *Event Weights ($W_{\text{type}}$):*
 - Poster Dunk: `1.00`
 - Ankle Breaker / Crossover: `0.95`
@@ -259,6 +403,86 @@ Interactive Remotion 4.0 player rendering 9:16 vertical short-form reels with an
 
 ---
 
+## 🔌 Comprehensive API & Backend Reference
+
+VidOps exposes full Next.js REST API endpoints for seamless integration:
+
+| Method | Endpoint | Description | Payload / Query |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/stream-source` | Validates Facebook Live URL / embed code against SEC-01 and probes direct CDN via `yt-dlp`. | `{ rawInput: string, authorizedMediaFeed?: string }` |
+| `GET` | `/api/basketball-manifest` | Retrieves current game metadata, events manifest, EDL list, MVP report, and segments. | None |
+| `PATCH`| `/api/basketball-manifest` | Operator verification toggle; records audit trail in `operator_audit_log.json`. | `{ eventId: string, verificationStatus: "VERIFIED" }` |
+| `GET` | `/api/github-app` | Verifies GitHub App connection status (`appId: 5173239`, `clientId: Iv23liAMEZjD4rPtZhe5`). | None |
+| `POST` | `/api/github-app` | Initiates Device Flow, polls token, or publishes game release on behalf of user. | `{ action: "start_device_flow" \| "act_on_behalf" }` |
+| `POST` | `/api/audio` | Generates or fetches AI music soundtrack via Mureka API (120 BPM trap beat). | `{ prompt: string }` |
+| `POST` | `/api/clips` | Fetches filtered clips by category (`highlights`, `dunks`, `bloopers`). | None |
+| `POST` | `/api/video-gen` | Dispatches post-game vertical reel rendering job via Remotion / FFmpeg. | `{ reelType: string, clips: [] }` |
+
+---
+
+## 🗄 Firebase SQL Connect (PostgreSQL Database Schema)
+
+VidOps includes production PostgreSQL relational schemas defined in `dataconnect/schema/schema.gql`:
+
+```graphql
+# Core Schema Models
+type Game @table {
+  id: UUID! @default(expr: "uuidV4()")
+  gameCode: String! @unique
+  homeTeam: String!
+  awayTeam: String!
+  status: String! @default(value: "NOT_CONNECTED") @index
+  scoreHome: Int @default(value: 0)
+  scoreAway: Int @default(value: 0)
+  periodOrQuarter: String @default(value: "Q1")
+}
+
+type Possession @table {
+  id: UUID! @default(expr: "uuidV4()")
+  game: Game!
+  periodOrQuarter: String!
+  startVideoTs: String!
+  endVideoTs: String!
+  offensiveTeam: String!
+  defensiveTeam: String!
+  pointsScored: Int @default(value: 0)
+}
+
+type Event @table {
+  id: UUID! @default(expr: "uuidV4()")
+  possession: Possession!
+  eventType: String! @index
+  primaryPlayer: Player
+  highlightScore: Float
+  verificationStatus: String! @default(value: "VERIFIED")
+}
+
+type Player @table {
+  id: UUID! @default(expr: "uuidV4()")
+  trackingId: String! @unique
+  jerseyNumber: String!
+  team: String!
+  identityVerified: Boolean! @default(value: false)
+}
+```
+
+---
+
+## 🎥 Video Ecosystem & AI MCP Integrations
+
+VidOps connects with specialized video generation, quality control, and timeline editing workflows:
+
+- **ComfyUI Video Quality Control** ([`ComfyUI-Workflow-Video-Quality-Control`](https://github.com/harsh-shrivas/ComfyUI-Workflow-Video-Quality-Control)): Automated visual artifact detection and upscale validation.
+- **RogueRender Headless Pipeline** ([`RogueRender`](https://github.com/LesToqz/RogueRender)): High-throughput headless GPU rendering for batch highlight generation.
+- **Diffusion Studio Web NLE** ([`Studio`](https://github.com/Phantom8420/Studio)): Browser-based multi-track timeline video editor running at `http://localhost:5173`.
+- **Aftr Video Auto-Cut** ([`aftr`](https://github.com/Jonahhalcyon613/aftr)): Smart shot boundary detector and transition synthesizer.
+- **Model Context Protocol (MCP)**:
+  - `remotion-media-mcp`: Remote Remotion composition inspector and frame renderer.
+  - `video-editing-mcp`: Programmatic FFmpeg cutlists and audio ducking scripts.
+  - `davinci-resolve-mcp`: EDL timeline export to professional broadcast suites.
+
+---
+
 ## 📦 Delivery Package Structure
 
 When processing concludes, VidOps generates a self-contained intelligence directory at `basketball_output/GAME_[GAME_ID]/`:
@@ -276,7 +500,8 @@ basketball_output/GAME_1743500926740597/
 │   └── MVP_Candidate_Report.json      # Dual-score leaderboard with evidence links
 ├── processing_logs/
 │   ├── processing_summary.md          # Human-readable game narrative summary
-│   └── quality_report.json            # Hardware gate metrics and verification status
+│   ├── quality_report.json            # Hardware gate metrics and verification status
+│   └── operator_audit_log.json        # Operator verification history and overrides
 ├── recording_segments/
 │   ├── segments_index.json            # Index of all 4-second continuous stream chunks
 │   └── seg_00000.mp4                  # Recovered source media segments
@@ -339,6 +564,31 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
+## ⚡ Hardware Acceleration & GPU Setup
+
+To enable NVIDIA GPU acceleration for PyTorch, TensorRT, and hardware FFmpeg NVENC:
+
+```bash
+# Set up GPU virtual environment
+make install-gpu
+
+# Verify NVIDIA GPU, CUDA driver, and VRAM detection
+make gpu-check
+```
+
+Example output:
+```json
+{
+  "nvidia_smi": true,
+  "torch": "2.3.0+cu121",
+  "cuda_available": true,
+  "device": "NVIDIA GeForce RTX 4090",
+  "vram_gb": 24.0
+}
+```
+
+---
+
 ## 🐳 Docker & Podman Deployment
 
 VidOps includes a containerized build bundling Node 22, Python 3.11, Chromium (for Remotion), and FFmpeg.
@@ -348,13 +598,13 @@ VidOps includes a containerized build bundling Node 22, Python 3.11, Chromium (f
 # Build the image
 docker compose build
 
-# Start the studio container
+# Start the studio container in background
 docker compose up -d
 
-# Check running services
+# Check running container health
 docker ps
 ```
-The studio will be available at [http://localhost:3001](http://localhost:3001).
+The studio will be live at [http://localhost:3001](http://localhost:3001).
 
 ---
 
