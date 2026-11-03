@@ -33,13 +33,11 @@
    - [Screen 5: Production & Exports (9:16 Remotion Studio)](#screen-5-production--exports-916-remotion-studio)
 8. [Comprehensive API & Backend Reference](#-comprehensive-api--backend-reference)
 9. [Firebase SQL Connect (PostgreSQL Database Schema)](#-firebase-sql-connect-postgresql-database-schema)
-10. [Video Ecosystem & AI MCP Integrations](#-video-ecosystem--ai-mcp-integrations)
-11. [Delivery Package Structure](#-delivery-package-structure)
-12. [Quickstart & Local Setup](#-quickstart--local-setup)
-13. [Hardware Acceleration & GPU Setup](#-hardware-acceleration--gpu-setup)
-14. [Docker & Podman Deployment](#-docker--podman-deployment)
-15. [Environment Configuration](#-environment-configuration)
-16. [Cloud & Hugging Face Deployments](#-cloud--hugging-face-deployments)
+10. [Delivery Package Structure](#-delivery-package-structure)
+11. [Quickstart & Local Setup](#-quickstart--local-setup)
+12. [Hardware Acceleration & GPU Setup](#-hardware-acceleration--gpu-setup)
+13. [Docker & Podman Deployment](#-docker--podman-deployment)
+14. [Environment Configuration](#-environment-configuration)
 
 ---
 
@@ -277,23 +275,15 @@ VidOps implements the complete 13-phase basketball intelligence specification:
 
 Unlike simplistic stat counters, VidOps uses a dual-axis mathematical model to determine **Player of the Game** candidates:
 
-### 1. Performance Score ($S_{\text{perf}} \in [0, 100]$)
+### 1. Performance Score ($S_{\text{perf}} \in [0, 99]$)
 Quantifies tangible on-court contributions and winning impact:
-$$S_{\text{perf}} = \min\left(100, \; 3.0 \cdot \text{PTS} + 4.0 \cdot \text{AST} + 5.0 \cdot \text{BLK} + 5.0 \cdot \text{STL} + 8.0 \cdot \text{CLUTCH} + 2.0 \cdot \text{FGM}\right)$$
+$$S_{\text{perf}} = \min\left(99, \; 45 + 6.0 \cdot \text{PTS} + 7.5 \cdot \text{AST} + 9.0 \cdot (\text{BLK} + \text{STL}) + 8.0 \cdot \text{CLUTCH}\right)$$
 
 ### 2. Highlight Score ($S_{\text{high}} \in [0, 100]$)
-Quantifies visual excitement, difficulty, crowd reaction, and social shareability:
-$$S_{\text{high}} = \frac{1}{N} \sum_{i=1}^{N} \left( W_{\text{type}}(e_i) \cdot C_{\text{crowd}}(e_i) \cdot D_{\text{difficulty}}(e_i) \right)$$
-
-*Event Weights ($W_{\text{type}}$):*
-- Poster Dunk: `1.00`
-- Ankle Breaker / Crossover: `0.95`
-- Deep 3-Pointer / Buzzer Beater: `0.90`
-- Chase-down Block: `0.85`
-- No-look / Alley-oop Assist: `0.80`
+Average of the per-event highlight scores (0-100) of the player's detected plays.
 
 ### 3. Composite MVP Ranking
-$$\text{Rank Score} = 0.50 \cdot S_{\text{perf}} + 0.50 \cdot S_{\text{high}}$$
+$$\text{Rank Score} = 0.60 \cdot S_{\text{perf}} + 0.40 \cdot S_{\text{high}}$$
 
 Every candidate is explicitly labeled as **"Player of the Game Candidate (Video-Based Provisional)"** with clickable timestamps linking directly to verified clip evidence.
 
@@ -374,7 +364,7 @@ Surfaces the top Player of the Game candidates with separate Performance and Hig
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │ 🏆 PROVISIONAL PLAYER OF THE GAME (MVP) CANDIDATES                                     │
 ├──────┬──────────────┬────────┬───────────┬──────────────┬────────────────┬─────────────┤
-│ RANK │ TRACKING ID  │ JERSEY │ PERF (50%)│ HIGHLIGHT(50%)│ CONFIRMED STATS│ EVIDENCE    │
+│ RANK │ TRACKING ID  │ JERSEY │ PERF (60%)│ HIGHLIGHT(40%)│ CONFIRMED STATS│ EVIDENCE    │
 ├──────┼──────────────┼────────┼───────────┼──────────────┼────────────────┼─────────────┤
 │  #1  │ PLY_WHITE_12 │ #12 Wht│ 88.5 /100 │ 94.0 /100    │ 24 PTS, 5 AST  │ [3 Clips ↗] │
 │  #2  │ PLY_BLUE_07  │ #7 Blu │ 82.0 /100 │ 78.5 /100    │ 18 PTS, 8 REB  │ [2 Clips ↗] │
@@ -405,7 +395,7 @@ Interactive Remotion 4.0 player rendering 9:16 vertical short-form reels with an
 
 ## 🔌 Comprehensive API & Backend Reference
 
-VidOps exposes full Next.js REST API endpoints for seamless integration:
+VidOps exposes the following Next.js API routes (`app/api/`):
 
 | Method | Endpoint | Description | Payload / Query |
 | :--- | :--- | :--- | :--- |
@@ -413,98 +403,56 @@ VidOps exposes full Next.js REST API endpoints for seamless integration:
 | `GET` | `/api/basketball-manifest` | Retrieves current game metadata, events manifest, EDL list, MVP report, and segments. | None |
 | `PATCH`| `/api/basketball-manifest` | Operator verification toggle; records audit trail in `operator_audit_log.json`. | `{ eventId: string, verificationStatus: "VERIFIED" }` |
 | `GET` | `/api/github-app` | Verifies GitHub App connection status (`appId: 5173239`, `clientId: Iv23liAMEZjD4rPtZhe5`). | None |
-| `POST` | `/api/github-app` | Initiates Device Flow, polls token, or publishes game release on behalf of user. | `{ action: "start_device_flow" \| "act_on_behalf" }` |
+| `POST` | `/api/github-app` | Device Flow start/poll, OAuth code exchange, or acting on behalf of the user. | `{ action: "start_device_flow" \| "poll_device_token" \| "exchange_code" \| "act_on_behalf" }` |
 | `POST` | `/api/audio` | Generates or fetches AI music soundtrack via Mureka API (120 BPM trap beat). | `{ prompt: string }` |
-| `POST` | `/api/clips` | Fetches filtered clips by category (`highlights`, `dunks`, `bloopers`). | None |
-| `POST` | `/api/video-gen` | Dispatches post-game vertical reel rendering job via Remotion / FFmpeg. | `{ reelType: string, clips: [] }` |
+| `GET` | `/api/clips` | Lists available clips. | None |
+| `GET` | `/api/video-gen` | Reports local GPU video-generation status (enabled, model, `nvidia-smi` availability). | None |
 
 ---
 
 ## 🗄 Firebase SQL Connect (PostgreSQL Database Schema)
 
-VidOps includes production PostgreSQL relational schemas defined in `dataconnect/schema/schema.gql`:
+The relational schema lives in `dataconnect/schema/schema.gql` (queries and mutations in `dataconnect/connector/`). Tables:
 
-```graphql
-# Core Schema Models
-type Game @table {
-  id: UUID! @default(expr: "uuidV4()")
-  gameCode: String! @unique
-  homeTeam: String!
-  awayTeam: String!
-  status: String! @default(value: "NOT_CONNECTED") @index
-  scoreHome: Int @default(value: 0)
-  scoreAway: Int @default(value: 0)
-  periodOrQuarter: String @default(value: "Q1")
-}
+| Table | Purpose |
+| :--- | :--- |
+| `Clip` | Library clips (key, url, name, category, duration). |
+| `AudioTrack` | Generated soundtrack metadata. |
+| `Reel` / `ReelClip` | Reels and their ordered clips. |
+| `Game` | Game metadata. |
+| `StreamSource` | Validated stream sources per game. |
+| `RecordingSegment` | Continuous-recording segments. |
+| `Player` | Tracked players. |
+| `GameEvent` / `PlayerEvent` | Detected events and their player links. |
+| `MvpCandidate` | Dual-score MVP candidates. |
+| `RenderJob` | Reel render jobs. |
+| `AuditLog` | Operator audit trail. |
 
-type Possession @table {
-  id: UUID! @default(expr: "uuidV4()")
-  game: Game!
-  periodOrQuarter: String!
-  startVideoTs: String!
-  endVideoTs: String!
-  offensiveTeam: String!
-  defensiveTeam: String!
-  pointsScored: Int @default(value: 0)
-}
-
-type Event @table {
-  id: UUID! @default(expr: "uuidV4()")
-  possession: Possession!
-  eventType: String! @index
-  primaryPlayer: Player
-  highlightScore: Float
-  verificationStatus: String! @default(value: "VERIFIED")
-}
-
-type Player @table {
-  id: UUID! @default(expr: "uuidV4()")
-  trackingId: String! @unique
-  jerseyNumber: String!
-  team: String!
-  identityVerified: Boolean! @default(value: false)
-}
-```
-
----
-
-## 🎥 Video Ecosystem & AI MCP Integrations
-
-VidOps connects with specialized video generation, quality control, and timeline editing workflows:
-
-- **ComfyUI Video Quality Control** ([`ComfyUI-Workflow-Video-Quality-Control`](https://github.com/harsh-shrivas/ComfyUI-Workflow-Video-Quality-Control)): Automated visual artifact detection and upscale validation.
-- **RogueRender Headless Pipeline** ([`RogueRender`](https://github.com/LesToqz/RogueRender)): High-throughput headless GPU rendering for batch highlight generation.
-- **Diffusion Studio Web NLE** ([`Studio`](https://github.com/Phantom8420/Studio)): Browser-based multi-track timeline video editor running at `http://localhost:5173`.
-- **Aftr Video Auto-Cut** ([`aftr`](https://github.com/Jonahhalcyon613/aftr)): Smart shot boundary detector and transition synthesizer.
-- **Model Context Protocol (MCP)**:
-  - `remotion-media-mcp`: Remote Remotion composition inspector and frame renderer.
-  - `video-editing-mcp`: Programmatic FFmpeg cutlists and audio ducking scripts.
-  - `davinci-resolve-mcp`: EDL timeline export to professional broadcast suites.
+Useful scripts: `npm run dc:compile`, `npm run dc:sdk`, `npm run dc:emulator`.
 
 ---
 
 ## 📦 Delivery Package Structure
 
-When processing concludes, VidOps generates a self-contained intelligence directory at `basketball_output/GAME_[GAME_ID]/`:
+Output is written under `basketball_output/`. Each game gets a directory with its summary files; shared manifests, logs and segments live at the output root:
 
 ```
-basketball_output/GAME_1743500926740597/
-├── Event_Log.csv                      # Complete machine-readable play-by-play log
-├── MVP_Candidate_Report.json          # Provisional MVP rankings and verified stats
-├── Processing_Report.json             # Camera integrity, FPS, duration, and QC checks
+basketball_output/
+├── GAME_[GAME_ID]/
+│   ├── Event_Log.csv                  # Machine-readable play-by-play log
+│   ├── MVP_Candidate_Report.json      # Provisional MVP rankings and verified stats
+│   └── Processing_Report.json         # Integrity, FPS, duration, and QC checks
 ├── event_manifest/
-│   ├── edit_decision_list.json        # Frame-accurate EDL for Remotion / NLE editors
-│   ├── events_manifest.json           # Detailed detection payloads and bounding boxes
+│   ├── edit_decision_list.json        # EDL for Remotion / NLE editors
+│   ├── events_manifest.json           # Detection payloads
 │   └── events_manifest.csv            # Tabular manifest
 ├── mvp_candidates/
 │   └── MVP_Candidate_Report.json      # Dual-score leaderboard with evidence links
 ├── processing_logs/
-│   ├── processing_summary.md          # Human-readable game narrative summary
-│   ├── quality_report.json            # Hardware gate metrics and verification status
-│   └── operator_audit_log.json        # Operator verification history and overrides
+│   ├── processing_summary.md          # Human-readable game summary
+│   └── quality_report.json            # Verification status and QC metrics
 ├── recording_segments/
-│   ├── segments_index.json            # Index of all 4-second continuous stream chunks
-│   └── seg_00000.mp4                  # Recovered source media segments
+│   └── segments_index.json            # Index of 4-second stream chunks (seg_NNNNN.mp4)
 └── review_required/
     └── review_required_events.json    # Ambiguous events flagged for human signoff
 ```
@@ -604,7 +552,7 @@ docker compose up -d
 # Check running container health
 docker ps
 ```
-The studio will be live at [http://localhost:3001](http://localhost:3001).
+The studio will be live at [http://localhost:3000](http://localhost:3000).
 
 ---
 
@@ -613,21 +561,12 @@ The studio will be live at [http://localhost:3001](http://localhost:3001).
 | Variable | Description | Required? | Default |
 | :--- | :--- | :--- | :--- |
 | `GEMINI_API_KEY` | Google Gemini API key for vision and live commentary | **Yes** | — |
-| `BRAINTRUST_API_KEY` | Braintrust AI observability & evaluation API key | Optional | — |
-| `MUREKA_API_KEY` | AI soundtrack generation API key | Optional | Mock beat |
-| `GITHUB_APP_ID` | GitHub App ID for server-to-server publishing | Optional | `5173239` |
+| `BRAINTRUST_API_KEY` | Braintrust tracing API key | Optional | — |
+| `MUREKA_API_KEY` | AI soundtrack generation API key | Optional | — |
+| `MUREKA_API_URL` | Mureka generation endpoint | Optional | `https://api.mureka.ai/v1/generate` |
+| `VIDEO_GEN_LOCAL_ENABLED` | Enable local GPU video generation | Optional | `true` |
+| `VIDEO_GEN_LOCAL_MODEL` | Local video-generation model | Optional | `wan2.2-ti2v-5b` |
+| `GITHUB_APP_ID` | GitHub App ID | Optional | `5173239` |
 | `GITHUB_APP_CLIENT_ID` | GitHub App Client ID | Optional | `Iv23liAMEZjD4rPtZhe5` |
-| `PORT` | Web server listening port | Optional | `3000` |
-
----
-
-## 🌐 Cloud & Hugging Face Deployments
-
-- **Hugging Face Studio Space**: [vidops-basketball-ai-studio](https://huggingface.co/spaces/Tinkoy/vidops-basketball-ai-studio)
-- **Hugging Face Game Dataset**: [vidops-basketball-game-1743500926740597](https://huggingface.co/datasets/Tinkoy/vidops-basketball-game-1743500926740597)
-- **GitHub Repository**: [alfredvirtualsolutions-glitch/vidops](https://github.com/alfredvirtualsolutions-glitch/vidops)
-
----
-
-## 📜 License
-Distributed under the Apache 2.0 License. See `LICENSE` for more information.
+| `GITHUB_APP_CLIENT_SECRET` | GitHub App client secret (OAuth code exchange) | Optional | — |
+| `GITHUB_USER_ACCESS_TOKEN` | User-to-server access token | Optional | — |
