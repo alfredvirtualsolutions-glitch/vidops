@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "concat": {
+      "command": "/Applications/Concat.app/Contents/MacOS/concat",
+      "args": ["--mcp"]
+    }
+  }
+}
