@@ -34,10 +34,11 @@
 8. [Comprehensive API & Backend Reference](#-comprehensive-api--backend-reference)
 9. [Firebase SQL Connect (PostgreSQL Database Schema)](#-firebase-sql-connect-postgresql-database-schema)
 10. [Delivery Package Structure](#-delivery-package-structure)
-11. [Quickstart & Local Setup](#-quickstart--local-setup)
-12. [Hardware Acceleration & GPU Setup](#-hardware-acceleration--gpu-setup)
-13. [Docker & Podman Deployment](#-docker--podman-deployment)
-14. [Environment Configuration](#-environment-configuration)
+11. [Editing with Concat](#-editing-with-concat)
+12. [Quickstart & Local Setup](#-quickstart--local-setup)
+13. [Hardware Acceleration & GPU Setup](#-hardware-acceleration--gpu-setup)
+14. [Docker & Podman Deployment](#-docker--podman-deployment)
+15. [Environment Configuration](#-environment-configuration)
 
 ---
 
@@ -456,6 +457,44 @@ basketball_output/
 └── review_required/
     └── review_required_events.json    # Ambiguous events flagged for human signoff
 ```
+
+---
+
+## ✂️ Editing with Concat
+
+Concat is the team's main editor for manual touch-ups. It is a macOS app with an MCP mode, so Claude Code can drive it from plain-language prompts instead of a timeline UI.
+
+### Setup
+1. Install `Concat.app` into `/Applications` (macOS only; the path below is fixed).
+2. The repo already registers it in [`.mcp.json`](.mcp.json):
+   ```json
+   {
+     "mcpServers": {
+       "concat": {
+         "command": "/Applications/Concat.app/Contents/MacOS/concat",
+         "args": ["--mcp"]
+       }
+     }
+   }
+   ```
+   To register it for every project instead, run:
+   ```bash
+   claude mcp add --scope user concat -- /Applications/Concat.app/Contents/MacOS/concat --mcp
+   ```
+3. Start Claude Code in the repo and approve the `concat` server when prompted, then check it with `claude mcp list`.
+
+The server only starts on a Mac with Concat installed. In Linux, container and cloud sessions it shows as failed to connect, which is expected.
+
+### Touch-up workflow
+1. Run the pipeline so `basketball_output/event_manifest/edit_decision_list.json` exists (see [Delivery Package Structure](#-delivery-package-structure)).
+2. Render the reel with `npm run render`. Remotion's default output goes to `out/`, which is git-ignored.
+3. In Claude Code, point Concat at the rendered video and describe the change in plain language.
+
+The EDL is a JSON array with one entry per clip. Use it as the reference for what to change. Useful fields per entry: `order`, `event_id`, `clip_filename`, `start_ts` / `end_ts`, `transition_in`, `text_overlay`, `speed_ramp` and `effects`. For example:
+
+> Open `out/MainComposition.mp4`. Clip 3 (`EVT_004`, 00:01:00.000 to 00:01:16.500) cuts in too early: trim 1.5 s off the start and use a quick zoom instead of a hard cut.
+
+Concat's accepted input formats are not documented in this repo. Whether it can load the EDL JSON directly is unverified, so treat the EDL as a reference and give Concat the rendered video.
 
 ---
 
