@@ -14,3 +14,6 @@ __pycache__/
 *.pyc
 basketball_output/recording_segments/*.mp4
 basketball_output/**/*.mp4
+
+# HarnessKit per-session logs
+.harnesskit/
