@@ -15,6 +15,12 @@ export type ReelClip = {
   volume: number;
   effects: string[];
   durationInSeconds?: number;
+  /** Seconds into the source file to start playing from (default 0). */
+  startFromInSeconds?: number;
+  /** Slow push-in over the clip's length (beat-synced reels use this). */
+  zoom?: boolean;
+  /** Length of the source file in seconds, when known. */
+  sourceDuration?: number;
 };
 
 export type ReelProps = {
@@ -23,6 +29,18 @@ export type ReelProps = {
   audioTrack: string | null;
   audioVolume: number;
   clips: ReelClip[];
+  /** Fade audio and picture out over this many seconds at the end (default 0). */
+  fadeOutSeconds?: number;
+};
+
+/** Output of scripts/beat_sync_audio.py, stored next to the track in public/audio/. */
+export type BeatMap = {
+  track: string;
+  durationInSeconds: number;
+  bpm: number;
+  barSeconds: number;
+  /** Cut boundaries in seconds, starting at 0 and ending at the track length. */
+  cuts: number[];
 };
 
 export type AudioResult = {
@@ -32,7 +50,7 @@ export type AudioResult = {
   error?: string;
 };
 
-export const REEL_TYPES = ["highlights", "bloopers"] as const;
+export const REEL_TYPES = ["highlights", "bloopers", "wildlife"] as const;
 export type ReelType = (typeof REEL_TYPES)[number];
 
 export const RESOLUTION = { width: 1080, height: 1920 } as const;

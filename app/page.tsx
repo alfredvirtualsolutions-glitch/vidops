@@ -6,16 +6,23 @@ import { MainComposition } from "@/remotion/MainComposition";
 import {
   REEL_TYPES,
   type AudioResult,
+  type BeatMap,
   type Clip,
   type ReelClip,
   type ReelProps,
   type ReelType,
 } from "@/lib/types";
-import { buildReelProps, selectClipsForTarget, totalDuration } from "@/lib/props";
+import {
+  buildBeatSyncedClips,
+  buildReelProps,
+  selectClipsForTarget,
+  totalDuration,
+} from "@/lib/props";
 
 const DEFAULT_PROMPTS: Record<ReelType, string> = {
   highlights: "Upbeat, high-energy trap beat for basketball highlights, 120 BPM",
   bloopers: "Comical, goofy tuba and pizzicato strings for sports mistakes",
+  wildlife: "Cinematic ambient nature score, slow build, 98 BPM",
 };
 
 type StudioTab = "games" | "live" | "clips" | "mvp" | "exports";
@@ -165,6 +172,7 @@ export default function BasketballAiStudio() {
     kind: "",
   });
   const [busy, setBusy] = useState(false);
+  const [fadeOutSeconds, setFadeOutSeconds] = useState(0);
   const playerRef = useRef<PlayerRef | null>(null);
 
   // GitHub App User-to-Server Auth state (acting on behalf of alfredkeybusiness-eng / Chubby Genius, App ID: 5173239)
@@ -235,8 +243,8 @@ export default function BasketballAiStudio() {
   );
 
   const props: ReelProps = useMemo(
-    () => buildReelProps({ clips: selected, audioTrack: audioUrl }),
-    [selected, audioUrl]
+    () => buildReelProps({ clips: selected, audioTrack: audioUrl, fadeOutSeconds }),
+    [selected, audioUrl, fadeOutSeconds]
   );
 
   const reshuffle = useCallback(() => {
@@ -247,7 +255,40 @@ export default function BasketballAiStudio() {
       effects: [],
     }));
     setSelected(selectClipsForTarget(pool));
+    setFadeOutSeconds(0);
   }, [categoryClips]);
+
+  const beatSync = async () => {
+    setBusy(true);
+    setAudioStatus({ text: "Cutting clips to the track…", kind: "" });
+    try {
+      const res = await fetch("/audio/anim.beats.json");
+      if (!res.ok) throw new Error(`beat map not found (${res.status})`);
+      const map = (await res.json()) as BeatMap;
+      const pool: ReelClip[] = categoryClips.map((c) => ({
+        src: c.url,
+        objectFit: "cover",
+        volume: 0,
+        effects: [],
+        ...(c.duration ? { sourceDuration: c.duration } : {}),
+      }));
+      const cut = buildBeatSyncedClips(pool, map.cuts);
+      setSelected(cut);
+      setAudioUrl(map.track);
+      setFadeOutSeconds(2.5);
+      setAudioStatus({
+        text: `Beat-synced: ${cut.length} cuts to ${map.track} (~${map.bpm} BPM, ${map.durationInSeconds}s)`,
+        kind: "ok",
+      });
+    } catch (e) {
+      setAudioStatus({
+        text: `Beat-sync failed: ${e instanceof Error ? e.message : String(e)}`,
+        kind: "err",
+      });
+    } finally {
+      setBusy(false);
+    }
+  };
 
   useEffect(() => {
     reshuffle();
@@ -739,6 +780,9 @@ export default function BasketballAiStudio() {
                   </button>
                   <button className="primary" onClick={generateAudio} disabled={busy}>
                     {busy ? "Working…" : "Generate Mureka Audio"}
+                  </button>
+                  <button onClick={beatSync} disabled={busy || categoryClips.length === 0}>
+                    Beat-sync to ANIM track
                   </button>
                   <button onClick={downloadProps}>Export EDL / Props</button>
                 </div>

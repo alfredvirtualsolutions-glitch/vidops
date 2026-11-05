@@ -392,6 +392,11 @@ Interactive Remotion 4.0 player rendering 9:16 vertical short-form reels with an
 └─────────────────────────┴──────────────────────────────────────────────────────────────┘
 ```
 
+#### Beat-synced reels (wildlife demo)
+`public/clips/wildlife/` holds five 1080×1920 clips and `public/audio/anim.flac` is the ANIM track, with its cut list in `public/audio/anim.beats.json`. Pick **wildlife** as the reel type and press **Beat-sync to ANIM track**: the clips are cut on the track's bars (twice as fast in the loud sections), muted, pushed in slowly, and faded out at the end. Repeat visits to a clip use a different part of it. To render the same edit with `npm run render`, export **Export EDL / Props** and pass the file with `--props`.
+
+To prepare another track, run `python scripts/beat_sync_audio.py INPUT.wav OUT_DIR` (needs `pip install av numpy scipy`). It repairs raw-AAC-in-WAV files, writes a plain WAV and a `<name>.beats.json` in the same shape as `anim.beats.json`. Cut sync follows the bar grid, so it is only as tight as the music's pulse.
+
 ---
 
 ## 🔌 Comprehensive API & Backend Reference
