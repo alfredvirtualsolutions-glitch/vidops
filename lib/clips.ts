@@ -1,5 +1,7 @@
+import { execFile } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
+import { promisify } from "util";
 import { Clip } from "./types";
 
 const CLIPS_ROOT = path.join(process.cwd(), "public", "clips");
@@ -23,9 +25,27 @@ async function walk(dir: string): Promise<string[]> {
   return files;
 }
 
+const run = promisify(execFile);
+
+/** Duration in seconds via ffprobe, or null when ffprobe is missing or fails. */
+async function probeDuration(file: string): Promise<number | null> {
+  try {
+    const { stdout } = await run(
+      "ffprobe",
+      ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", file],
+      { timeout: 5000 }
+    );
+    const seconds = parseFloat(stdout);
+    return Number.isFinite(seconds) ? seconds : null;
+  } catch {
+    return null;
+  }
+}
+
 export async function listClips(): Promise<Clip[]> {
   const files = await walk(CLIPS_ROOT);
-  return files.map((full) => {
+  const durations = await Promise.all(files.map(probeDuration));
+  return files.map((full, i) => {
     const rel = path.relative(path.join(process.cwd(), "public"), full).split(path.sep).join("/");
     const segments = rel.split("/");
     return {
@@ -33,7 +53,7 @@ export async function listClips(): Promise<Clip[]> {
       url: `/${rel}`,
       name: path.basename(rel),
       category: segments.length > 2 ? segments[1] : "uncategorized",
-      duration: null,
+      duration: durations[i],
     };
   });
 }
