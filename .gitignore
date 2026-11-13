@@ -17,3 +17,4 @@ basketball_output/**/*.mp4
 
 # HarnessKit per-session logs
 .harnesskit/
+.claude/settings.local.json
